@@ -10,6 +10,40 @@ class App extends Component {
     }
   };
 
+  state = {
+    lists: [
+      { 
+        id: null,
+        header: '',
+        cardIds: []
+       }
+    ],
+    allCards: [
+      {
+        '': { id: null, title: '', content: '' }
+      }
+    ]
+  }
+
+  deleteCard = (id) => {
+    this.setState( { lists: [...this.state.lists.filter(card => this.allCards.id !== id)] })
+  }
+
+  newRandomCard = () => {
+    const id = Math.random().toString(36).substring(2, 4)
+      + Math.random().toString(36).substring(2, 4);
+    return {
+      id,
+      title: `Random Card ${id}`,
+      content: 'lorem ipsum',
+    }
+  }
+
+  addCard = () => {
+    console.log('clicked')
+      this.setState( { allCards: [...this.state.allCards, this.newRandomCard()] })
+    }
+
   render() {
     const { store } = this.props
     return (
@@ -23,6 +57,7 @@ class App extends Component {
               key={list.id}
               header={list.header}
               cards={list.cardIds.map(id => store.allCards[id])}
+              onAdd={this.addCard}
             />
           ))}
         </div>
@@ -30,5 +65,6 @@ class App extends Component {
     );
   }
 }
+
 
 export default App;
